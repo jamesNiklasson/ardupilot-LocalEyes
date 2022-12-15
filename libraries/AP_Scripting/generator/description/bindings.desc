@@ -508,4 +508,5 @@ singleton AC_AttitudeControl depends APM_BUILD_TYPE(APM_BUILD_ArduPlane)||APM_BU
 singleton AC_AttitudeControl method get_rpy_srate void float'Ref float'Ref float'Ref
 
 include AP_LocalEyesLUA/AP_LocalEyesLUA.h
+singleton AP_LocalEyesLUA alias localeyes
 singleton AP_LocalEyesLUA method customMillis uint32_t
