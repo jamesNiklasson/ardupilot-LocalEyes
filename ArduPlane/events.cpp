@@ -189,6 +189,33 @@ void Plane::failsafe_long_on_event(enum failsafe_state fstype, ModeReason reason
     case Mode::Number::INITIALISING:
         break;
     }
+    if (g.fs_action_long == FS_ACTION_LONG_DISARM) {
+        AP_Arming::Method disarmMethod;
+        switch (reason) {
+            case ModeReason::RADIO_FAILSAFE:
+                disarmMethod = AP_Arming::Method::RADIOFAILSAFE;
+                break;
+            case ModeReason::BATTERY_FAILSAFE:
+                disarmMethod = AP_Arming::Method::BATTERYFAILSAFE;
+                break;
+            case ModeReason::GCS_FAILSAFE:
+                disarmMethod = AP_Arming::Method::GCSFAILSAFE;
+                break;
+            case ModeReason::EKF_FAILSAFE:
+                disarmMethod = AP_Arming::Method::EKFFAILSAFE;
+                break;
+            case ModeReason::TERRAIN_FAILSAFE:
+                disarmMethod = AP_Arming::Method::TERRAINFAILSAFE;
+                break;
+            case ModeReason::CRASH_FAILSAFE:
+                disarmMethod = AP_Arming::Method::CRASH;
+                break;
+            default:
+                disarmMethod = AP_Arming::Method::UNKNOWN;
+                break;
+        }
+        arming.disarm(disarmMethod);
+    }
     gcs().send_text(MAV_SEVERITY_INFO, "Flight mode = %s", control_mode->name());
 }
 
