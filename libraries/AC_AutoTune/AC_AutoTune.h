@@ -24,6 +24,8 @@
 #include <AP_Math/AP_Math.h>
 #include "AC_AutoTune_FreqResp.h"
 
+#include <GCS_MAVLink/GCS.h>
+
 #define AUTOTUNE_AXIS_BITMASK_ROLL            1
 #define AUTOTUNE_AXIS_BITMASK_PITCH           2
 #define AUTOTUNE_AXIS_BITMASK_YAW             4

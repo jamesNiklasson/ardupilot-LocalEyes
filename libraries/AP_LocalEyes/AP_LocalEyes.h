@@ -2,6 +2,8 @@
 
 #include <AP_HAL/AP_HAL.h>
 #include <AP_RangeFinder/AP_RangeFinder.h>
+#include <AP_Vehicle/AP_Vehicle.h>
+#include <AP_AHRS/AP_AHRS.h>
 
 class AP_LocalEyes {
 public:
@@ -25,6 +27,12 @@ public:
 
     //allows direct use of height as meassured by LIDAR
     float lidarHeight();
+
+    //distance to the next waypoint in m
+    float waypointDist();
+
+    //current NED speed in m/s
+    float nedSpeed();
 
 private:
     static AP_LocalEyes *_singleton;
