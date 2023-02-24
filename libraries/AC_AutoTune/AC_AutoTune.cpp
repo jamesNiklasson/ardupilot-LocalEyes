@@ -323,8 +323,6 @@ void AC_AutoTune::control_attitude()
 
         // if we have been level for a sufficient amount of time (0.5 seconds) move onto tuning step
         if (now - step_start_time_ms > AUTOTUNE_REQUIRED_LEVEL_TIME_MS) {
-            //LocalEyes troubleshooting: This should never happen because we don't want to autotune, warn if we ever get here
-            GCS::get_singleton()->send_text(MAV_SEVERITY_ERROR, "Erroneous Autotune Twitch");
             // initiate variables for next step
             step = TESTING;
             step_start_time_ms = now;
