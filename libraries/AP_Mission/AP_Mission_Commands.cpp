@@ -7,6 +7,7 @@
 #include <AP_ServoRelayEvents/AP_ServoRelayEvents.h>
 #include <AC_Sprayer/AC_Sprayer.h>
 #include <AP_Scripting/AP_Scripting.h>
+#include <AP_LocalEyes/AP_LocalEyes.h>
 
 bool AP_Mission::start_command_do_aux_function(const AP_Mission::Mission_Command& cmd)
 {
@@ -202,4 +203,9 @@ bool AP_Mission::start_command_do_scripting(const AP_Mission::Mission_Command& c
 #else
     return false;
 #endif // AP_SCRIPTING_ENABLED
+}
+
+bool AP_Mission::start_command_do_setDropPrepared(const AP_Mission::Mission_Command& cmd) {
+    AP_LocalEyes::get_singleton() -> setDropReadyFlag(cmd.content.set_drop_prepared.drop_prepared);
+    return true;
 }

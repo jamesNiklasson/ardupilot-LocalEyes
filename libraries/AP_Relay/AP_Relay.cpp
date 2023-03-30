@@ -152,6 +152,15 @@ void AP_Relay::toggle(uint8_t instance)
     }
 }
 
+bool AP_Relay::activated(uint8_t instance)
+{
+  if (instance < AP_RELAY_NUM_RELAYS && _pin[instance] != -1) {
+    return hal.gpio->read(_pin[instance]);
+  } else {
+    return false;
+  }
+}
+
 // check settings are valid
 bool AP_Relay::arming_checks(size_t buflen, char *buffer) const
 {

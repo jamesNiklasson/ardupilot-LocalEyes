@@ -25,3 +25,16 @@ float AP_LocalEyes::nedSpeed() {
     if (AP_AHRS::get_singleton()->get_velocity_NED(ned_velocity)) return ned_velocity.length();
     return 0;
 }
+
+void AP_LocalEyes::setDropReadyFlag(bool dropReadyFlag) {
+    this -> dropReady = dropReadyFlag;
+    if (dropReadyFlag) {
+        GCS::get_singleton() -> send_text(MAV_SEVERITY_INFO, "Drop ready flag set!");
+    } else {
+        GCS::get_singleton() -> send_text(MAV_SEVERITY_INFO, "Drop ready flag cleared!");
+    }
+}
+
+bool AP_LocalEyes::isDropReady() {
+    return this -> dropReady;
+}

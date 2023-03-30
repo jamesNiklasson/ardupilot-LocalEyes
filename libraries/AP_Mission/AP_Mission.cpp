@@ -326,6 +326,7 @@ bool AP_Mission::verify_command(const Mission_Command& cmd)
     case MAV_CMD_DO_SPRAYER:
     case MAV_CMD_DO_AUX_FUNCTION:
     case MAV_CMD_DO_SET_RESUME_REPEAT_DIST:
+    case MAV_CMD_DO_SET_DROP_READY:
         return true;
     default:
         return _cmd_verify_fn(cmd);
@@ -363,6 +364,8 @@ bool AP_Mission::start_command(const Mission_Command& cmd)
         return start_command_do_sprayer(cmd);
     case MAV_CMD_DO_SET_RESUME_REPEAT_DIST:
         return command_do_set_repeat_dist(cmd);
+    case MAV_CMD_DO_SET_DROP_READY:
+        return start_command_do_setDropPrepared(cmd);
     default:
         return _cmd_start_fn(cmd);
     }
@@ -1028,6 +1031,10 @@ MAV_MISSION_RESULT AP_Mission::mavlink_int_to_mission_cmd(const mavlink_mission_
         cmd.p1 = packet.param1;                         // p1=0 means use current location, p=1 means use provided location
         break;
 
+    case MAV_CMD_DO_SET_DROP_READY:                                     // MAV ID: 700
+        cmd.content.set_drop_prepared.drop_prepared = packet.param1;    // Drop prepared flag
+        break;
+
     case MAV_CMD_DO_SET_RELAY:                          // MAV ID: 181
         cmd.content.relay.num = packet.param1;          // relay number
         cmd.content.relay.state = packet.param2;        // 0:off, 1:on
@@ -1492,6 +1499,10 @@ bool AP_Mission::mission_cmd_to_mavlink_int(const AP_Mission::Mission_Command& c
 
     case MAV_CMD_DO_SET_HOME:                           // MAV ID: 179
         packet.param1 = cmd.p1;                         // p1=0 means use current location, p=1 means use provided location
+        break;
+
+    case MAV_CMD_DO_SET_DROP_READY:                                     // MAV ID: 700
+        packet.param1 = cmd.content.set_drop_prepared.drop_prepared;    // Drop prepared flag
         break;
 
     case MAV_CMD_DO_SET_RELAY:                          // MAV ID: 181
@@ -2305,6 +2316,8 @@ const char *AP_Mission::Mission_Command::type() const
         return "ChangeSpeed";
     case MAV_CMD_DO_SET_HOME:
         return "SetHome";
+    case MAV_CMD_DO_SET_DROP_READY:
+        return "SetDropPrepared";
     case MAV_CMD_DO_SET_SERVO:
         return "SetServo";
     case MAV_CMD_DO_SET_RELAY:

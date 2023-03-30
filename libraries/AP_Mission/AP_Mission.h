@@ -228,6 +228,11 @@ public:
         float arg1;
         float arg2;
     };
+
+    // set drop prepared command structure
+    struct PACKED Set_Drop_Prepared_Command {
+        uint8_t drop_prepared;      // 0 to clear, 1 to set drop prepared flag
+    };
     
     union Content {
         // jump structure
@@ -301,6 +306,9 @@ public:
 
         // nav scripting
         nav_script_time_Command nav_script_time;
+
+        //drop prepared
+        Set_Drop_Prepared_Command set_drop_prepared;
         
         // location
         Location location{};      // Waypoint location
@@ -747,6 +755,8 @@ private:
 
     bool start_command_do_sprayer(const AP_Mission::Mission_Command& cmd);
     bool start_command_do_scripting(const AP_Mission::Mission_Command& cmd);
+
+    bool start_command_do_setDropPrepared(const AP_Mission::Mission_Command& cmd);
 
 };
 
